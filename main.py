@@ -32,17 +32,9 @@ def main():
     print(f"Number of Images used for training: {len(train_data)}")
     print(f"Number of Images used for Validation: {len(val_data)}")
 
-    from torch.utils.data import DataLoader, Subset
-    # Select a subset of 100 images
-    subset_indices = list(range(20))
-    subset_train_data = Subset(train_data, subset_indices)
-    subset_val_data = Subset(val_data, subset_indices)
-    print(f"Number of Images used for training: {len(subset_train_data)}")
-    print(f"Number of Images used for Validation: {len(subset_val_data)}")
-
     #data loader for training and validation
-    train_dl = DataLoader(subset_train_data, batch_size = args.trainbatchsize, shuffle = False, num_workers = 4, pin_memory = True)
-    val_dl = DataLoader(subset_val_data, batch_size = args.valbatchsize, shuffle = False, num_workers = 4, pin_memory = True)
+    train_dl = DataLoader(train_data, batch_size = args.trainbatchsize, shuffle = False, num_workers = 4, pin_memory = True)
+    val_dl = DataLoader(val_data, batch_size = args.valbatchsize, shuffle = False, num_workers = 4, pin_memory = True)
 
     if args.model == "convnext":
         model = convnext_model()
@@ -107,7 +99,7 @@ def main():
         
         writer.add_scalars("loss_graphs",{"Loss/train" : train_loss,"Loss/val" : val_loss}, epoch)
         writer.add_scalars("accuracy_graphs",{"accuracy/train" : train_acc, "accuracy/val" : val_acc}, epoch)
-        
+
         time_end = time.time()
         time_elapsed = time_end - time_start
         print("Time_elapsed for Epoch [{}] : [{:.2f}] s".format(epoch+1,time_elapsed))

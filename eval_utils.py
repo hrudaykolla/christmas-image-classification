@@ -4,15 +4,16 @@ import csv
 from data import ChristmasImages
 from PIL import Image
 import pandas as pd
+import os
 
 
 class TestSet(Dataset):
     
     def __init__(self, path):
         super().__init__()
-        self.dataset = ChristmasImages(path + '/data/val', training=False)
+        self.dataset = ChristmasImages(path + '/test', training=False)
         
-        with open(path + '/val.csv') as file:
+        with open(path + '/test.csv') as file:
             reader = csv.reader(file)
             next(reader)
             labels = {}
@@ -29,8 +30,9 @@ class TestSet(Dataset):
         return image, label
 
 
-def evaluate(model, loader):
+def evaluate(model, loader,path):
 #     model = model.cuda()
+    path = os.path.join(path,'predictions.csv')
     indices = []
     index = 0
     predictions = []
@@ -42,9 +44,11 @@ def evaluate(model, loader):
             _, prediction = model(image).max(dim=1)
             predictions.append(prediction.item())
             df = pd.DataFrame({'Id': indices, 'Category': predictions})
-            df.to_csv('predictions.csv', index= False)
+            df.to_csv(path, index= False)
             accuracy += (prediction == label).sum().item()
             index = index + 1
             
     accuracy /= len(loader)
+    accuracy = accuracy*100
+    print("accuracy", accuracy)
     return accuracy
