@@ -63,9 +63,9 @@ Output contains:
 
 For testing use evaluate.py file. Update the following path in the file.
 for example:
-# dataset location
+### dataset location
 path = `./data/test`
-# Output path location
+### Output path location
 ouput_path = `./outputs/output_1`
 
 After updating, run `python evaluate.py` this save two more files in output folder.
