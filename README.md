@@ -75,3 +75,6 @@ After updating, run `python evaluate.py` this save two more files in output fold
 
 The output folder looks as below after training and testing.
 <img align="center" src="./images/output_folder.png" width="500">
+
+
+# This work was a group project consisting two people
